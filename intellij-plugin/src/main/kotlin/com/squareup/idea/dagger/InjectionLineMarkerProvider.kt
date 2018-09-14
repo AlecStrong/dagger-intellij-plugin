@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.LEFT
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.idea.refactoring.toPsiFile
 import org.jetbrains.uast.UField
 import org.jetbrains.uast.UFile
@@ -21,16 +22,20 @@ class InjectionLineMarkerProvider : LineMarkerProvider {
       val injectAnnotation = uElement.findAnnotation("javax.inject.Inject")
       if (injectAnnotation != null) {
         if (uElement.findAnnotation("Inject") != null) {
+          val targets = mutableListOf<PsiFile>()
           ProjectFileIndex.getInstance(element.project).iterateContent { vFile ->
-            val uFile = vFile.toPsiFile(element.project)?.toUElementOfType<UFile>() ?: return@iterateContent true
+            val psiFile = vFile.toPsiFile(element.project)
+            val uFile = psiFile?.toUElementOfType<UFile>()
+                ?: return@iterateContent true
             uFile.classes.forEach {
               println(it)
+              targets += psiFile
             }
             return@iterateContent true
           }
+          return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null,
+              DefaultGutterIconNavigationHandler(targets, "title"), LEFT)
         }
-        return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null,
-            DefaultGutterIconNavigationHandler(listOf(uElement), "title"), LEFT)
       }
     }
     return null
