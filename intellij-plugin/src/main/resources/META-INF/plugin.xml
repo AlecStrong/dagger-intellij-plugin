@@ -4,6 +4,8 @@
   <version>2.0.0</version>
   <vendor email="support@squareup.com" url="http://square.github.io">Square, Inc.</vendor>
 
+  <depends>org.jetbrains.kotlin</depends>
+
   <!-- Plugin's project components -->
   <project-components>
     <component>

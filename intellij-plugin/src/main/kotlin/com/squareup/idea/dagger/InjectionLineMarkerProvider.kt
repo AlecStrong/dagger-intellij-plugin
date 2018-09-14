@@ -6,13 +6,20 @@ import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiMethod
+import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.uast.UField
+import org.jetbrains.uast.getUastParentOfType
+import org.jetbrains.uast.toUElement
 
 class InjectionLineMarkerProvider : LineMarkerProvider {
+  init {
+    println("AHHHHHHHHHHHHH")
+  }
+
   override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
-    if (element is PsiMethod) {
-      // TODO
-    } else if (element is PsiField) {
-      val fieldElement = element
+    val uElement = element.toUElement()
+    if (uElement is UField) {
+      println("sup")
     }
     return null
   }

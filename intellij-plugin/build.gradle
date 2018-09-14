@@ -10,6 +10,7 @@ intellij {
   pluginName = 'SQLDelight'
   plugins = [
       "org.jetbrains.kotlin:${versions.kotlin}-release-IJ${versions.idea}-1",
+      "PsiViewer:182.2757.2",
   ]
   // Uncomment to test against Android Studio
   // intellij.alternativeIdePath = '/Applications/Android Studio.app'
