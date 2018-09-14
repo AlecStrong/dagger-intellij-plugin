@@ -1,14 +1,12 @@
 package com.squareup.idea.dagger
 
+import com.intellij.codeHighlighting.Pass.UPDATE_ALL
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
+import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.LEFT
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiField
-import com.intellij.psi.PsiMethod
-import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.uast.UField
-import org.jetbrains.uast.getUastParentOfType
 import org.jetbrains.uast.toUElement
 
 class InjectionLineMarkerProvider : LineMarkerProvider {
@@ -19,7 +17,10 @@ class InjectionLineMarkerProvider : LineMarkerProvider {
   override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
     val uElement = element.toUElement()
     if (uElement is UField) {
-      println("sup")
+      val injectAnnotation = uElement.findAnnotation("javax.inject.Inject")
+      if (injectAnnotation != null) {
+        return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null, null, LEFT)
+      }
     }
     return null
   }
