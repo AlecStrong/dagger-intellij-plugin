@@ -21,21 +21,19 @@ class InjectionLineMarkerProvider : LineMarkerProvider {
     if (uElement is UField) {
       val injectAnnotation = uElement.findAnnotation("javax.inject.Inject")
       if (injectAnnotation != null) {
-        if (uElement.findAnnotation("Inject") != null) {
-          val targets = mutableListOf<PsiFile>()
-          ProjectFileIndex.getInstance(element.project).iterateContent { vFile ->
-            val psiFile = vFile.toPsiFile(element.project)
-            val uFile = psiFile?.toUElementOfType<UFile>()
-                ?: return@iterateContent true
-            uFile.classes.forEach {
-              println(it)
-              targets += psiFile
-            }
-            return@iterateContent true
+        val targets = mutableListOf<PsiFile>()
+        ProjectFileIndex.getInstance(element.project).iterateContent { vFile ->
+          val psiFile = vFile.toPsiFile(element.project)
+          val uFile = psiFile?.toUElementOfType<UFile>()
+              ?: return@iterateContent true
+          uFile.classes.forEach {
+            println(it)
+            targets += psiFile
           }
-          return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null,
-              DefaultGutterIconNavigationHandler(targets, "title"), LEFT)
+          return@iterateContent true
         }
+        return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null,
+            DefaultGutterIconNavigationHandler(targets, "title"), LEFT)
       }
     }
     return null
