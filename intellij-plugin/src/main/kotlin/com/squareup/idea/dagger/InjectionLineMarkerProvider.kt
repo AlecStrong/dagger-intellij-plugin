@@ -1,6 +1,7 @@
 package com.squareup.idea.dagger
 
 import com.intellij.codeHighlighting.Pass.UPDATE_ALL
+import com.intellij.codeInsight.daemon.DefaultGutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.LEFT
@@ -19,7 +20,8 @@ class InjectionLineMarkerProvider : LineMarkerProvider {
     if (uElement is UField) {
       val injectAnnotation = uElement.findAnnotation("javax.inject.Inject")
       if (injectAnnotation != null) {
-        return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null, null, LEFT)
+        return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null,
+            DefaultGutterIconNavigationHandler(listOf(uElement), "title"), LEFT)
       }
     }
     return null
