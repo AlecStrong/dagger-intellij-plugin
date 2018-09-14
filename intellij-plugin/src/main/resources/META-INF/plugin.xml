@@ -10,4 +10,11 @@
       <implementation-class>com.squareup.idea.dagger.DaggerProjectComponent</implementation-class>
     </component>
   </project-components>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <codeInsight.lineMarkerProvider language="JAVA"
+        implementationClass="com.squareup.idea.dagger.InjectionLineMarkerProvider"/>
+    <codeInsight.lineMarkerProvider language="kotlin"
+        implementationClass="com.squareup.idea.dagger.InjectionLineMarkerProvider"/>
+  </extensions>
 </idea-plugin>
