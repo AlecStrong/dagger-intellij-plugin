@@ -16,6 +16,7 @@ class InjectionProvidersFinder {
       val uFile = psiFile?.toUElementOfType<UFile>()
           ?: return@iterateContent true
       uFile.classes
+          .filter { it.findAnnotation("dagger.Module") != null }
           .flatMap { it.methods.toList() }
           .forEach { method ->
             if (method.returnType == type && method.findAnnotation("dagger.Provides") != null) {

@@ -18,5 +18,7 @@
         implementationClass="com.squareup.idea.dagger.InjectionLineMarkerProvider"/>
     <codeInsight.lineMarkerProvider language="kotlin"
         implementationClass="com.squareup.idea.dagger.InjectionLineMarkerProvider"/>
+    <fileBasedIndex implementation="com.squareup.idea.dagger.index.InjectionSitesIndexExtension"/>
+    <fileBasedIndex implementation="com.squareup.idea.dagger.index.ProvisionSitesIndexExtension"/>
   </extensions>
 </idea-plugin>

@@ -7,6 +7,7 @@ import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.LEFT
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
+import com.squareup.idea.dagger.index.findProvisionSites
 import org.jetbrains.uast.UField
 import org.jetbrains.uast.toUElement
 
@@ -16,8 +17,7 @@ class InjectionLineMarkerProvider : LineMarkerProvider {
     if (uElement is UField) {
       val injectAnnotation = uElement.findAnnotation("javax.inject.Inject")
       if (injectAnnotation != null) {
-        val providesMethods = InjectionProvidersFinder().findProvidesMethods(element.project,
-            uElement.type)
+        val providesMethods = findProvisionSites(uElement.type.canonicalText, element.project)
         return LineMarkerInfo(element, element.textRange, ICON, UPDATE_ALL, null,
             DefaultGutterIconNavigationHandler(providesMethods, "title"), LEFT)
       }
