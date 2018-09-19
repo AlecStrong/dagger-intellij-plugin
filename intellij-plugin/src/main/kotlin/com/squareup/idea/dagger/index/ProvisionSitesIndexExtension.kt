@@ -27,7 +27,7 @@ class ProvisionSitesIndexExtension : FileBasedIndexExtension<String, List<Site>>
 
   class ProvisionSitesDataIndexer : DataIndexer<String, List<Site>, FileContent> {
     override fun map(inputData: FileContent): Map<String, List<Site>> {
-      return TextBasedDaggerSitesLocator.findProvisionSites(inputData.fileName,
+      return TextBasedDaggerSitesLocator.findProvisionSites(inputData.file.path,
           inputData.contentAsText.toString())
     }
   }

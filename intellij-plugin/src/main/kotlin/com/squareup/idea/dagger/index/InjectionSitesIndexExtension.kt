@@ -27,7 +27,7 @@ class InjectionSitesIndexExtension : FileBasedIndexExtension<String, List<Pair<S
 
   class InjectionSitesDataIndexer : DataIndexer<String, List<Site>, FileContent> {
     override fun map(inputData: FileContent): Map<String, List<Site>> {
-      return TextBasedDaggerSitesLocator.findInjectionSites(inputData.fileName,
+      return TextBasedDaggerSitesLocator.findInjectionSites(inputData.file.path,
           inputData.contentAsText.toString())
     }
   }

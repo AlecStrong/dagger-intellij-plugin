@@ -1,7 +1,9 @@
 package com.squareup.idea.dagger.index
 
+import com.intellij.util.text.StringSearcher
+
 object TextBasedDaggerSitesLocator {
-  fun findProvisionSites(fileName: String, content: String): Map<String, List<Site>> {
+  fun findProvisionSites(filePath: String, content: String): Map<String, List<Site>> {
     val lines = content.lines()
     val imports = mutableSetOf<String>()
     val injectionSites = mutableMapOf<String, MutableList<Site>>()
@@ -11,8 +13,9 @@ object TextBasedDaggerSitesLocator {
         imports += line.substring(line.lastIndexOf(' ') + 1, end)
       } else if ("@Provides" in line || "@dagger.Provides" in line) {
         val injectedType = findTypeFromProvidesExpression(lines, index, imports).trim()
-        injectionSites.putIfAbsent(injectedType, mutableListOf(fileName to index))
-            ?.add(fileName to index)
+        val offset = StringSearcher(line, true, true).findAllOccurrences(content)[0]
+        injectionSites.putIfAbsent(injectedType, mutableListOf(filePath to offset))
+            ?.add(filePath to offset)
       }
     }
     return injectionSites
@@ -40,7 +43,7 @@ object TextBasedDaggerSitesLocator {
     return findTypeFromProvidesExpression(expressions, index + 1, imports)
   }
 
-  fun findInjectionSites(fileName: String, content: String): Map<String, List<Site>> {
+  fun findInjectionSites(filePath: String, content: String): Map<String, List<Site>> {
     val lines = content.lines()
     val imports = mutableSetOf<String>()
     val injectionSites = mutableMapOf<String, MutableList<Site>>()
@@ -50,8 +53,9 @@ object TextBasedDaggerSitesLocator {
         imports += line.substring(line.lastIndexOf(' ') + 1, end)
       } else if ("@Inject" in line || "@javax.inject.Inject" in line) {
         val injectedType = findTypeFromInjectExpression(lines, index, imports).trim()
-        injectionSites.putIfAbsent(injectedType, mutableListOf(fileName to index))
-            ?.add(fileName to index)
+        val offset = StringSearcher(line, true, true).findAllOccurrences(content)[0]
+        injectionSites.putIfAbsent(injectedType, mutableListOf(filePath to offset))
+            ?.add(filePath to offset)
       }
     }
     return injectionSites

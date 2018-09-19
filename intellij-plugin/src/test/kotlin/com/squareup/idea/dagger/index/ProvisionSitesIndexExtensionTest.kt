@@ -15,7 +15,7 @@ class ProvisionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findProvisionSites("MyModule.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 70))
   }
 
   @Test fun kotlinOneLineNotImported() {
@@ -28,7 +28,7 @@ class ProvisionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findProvisionSites("MyModule.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 3))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 41))
   }
 
   @Test fun kotlinTwoLines() {
@@ -43,7 +43,7 @@ class ProvisionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findProvisionSites("MyModule.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 70))
   }
 
   @Test fun javaOneLineImported() {
@@ -59,7 +59,7 @@ class ProvisionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findProvisionSites("MyModule.java", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.java" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.java" to 79))
   }
 
   @Test fun javaOneLineNotImported() {
@@ -74,7 +74,7 @@ class ProvisionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findProvisionSites("MyModule.java", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.java" to 3))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.java" to 49))
   }
 
   @Test fun javaTwoLines() {
@@ -91,6 +91,6 @@ class ProvisionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findProvisionSites("MyModule.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyModule.kt" to 79))
   }
 }

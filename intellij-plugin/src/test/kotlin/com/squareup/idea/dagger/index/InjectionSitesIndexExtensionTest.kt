@@ -15,7 +15,7 @@ class InjectionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findInjectionSites("MyClass.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 73))
   }
 
   @Test fun kotlinFieldOneLineNotImported() {
@@ -28,7 +28,7 @@ class InjectionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findInjectionSites("MyClass.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 3))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 44))
   }
 
   @Test fun kotlinFieldTwoLines() {
@@ -43,7 +43,7 @@ class InjectionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findInjectionSites("MyClass.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 73))
   }
 
   @Test fun javaFieldOneLineImported() {
@@ -57,7 +57,7 @@ class InjectionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findInjectionSites("MyClass.java", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.java" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.java" to 82))
   }
 
   @Test fun javaFieldOneLineNotImported() {
@@ -70,7 +70,7 @@ class InjectionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findInjectionSites("MyClass.java", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.java" to 3))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.java" to 52))
   }
 
   @Test fun javaFieldTwoLines() {
@@ -84,6 +84,6 @@ class InjectionSitesIndexExtensionTest {
       |""".trimMargin()
     val sites = TextBasedDaggerSitesLocator.findInjectionSites("MyClass.kt", content)
     assertThat(sites).hasSize(1)
-    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 4))
+    assertThat(sites).containsEntry("android.view.EditText", listOf("MyClass.kt" to 82))
   }
 }
