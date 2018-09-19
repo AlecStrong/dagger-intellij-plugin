@@ -9,10 +9,6 @@ import com.intellij.util.indexing.ID
 import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.EnumeratorStringDescriptor
 import org.jetbrains.kotlin.idea.KotlinFileType
-import org.jetbrains.kotlin.psi.psiUtil.startOffset
-import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UField
-import org.jetbrains.uast.toUElement
 
 class InjectionSitesIndexExtension : FileBasedIndexExtension<String, List<Pair<String, Int>>>() {
   private val inputFilter = DefaultFileTypeSpecificInputFilter(
@@ -30,25 +26,9 @@ class InjectionSitesIndexExtension : FileBasedIndexExtension<String, List<Pair<S
   override fun getIndexer() = indexer
 
   class InjectionSitesDataIndexer : DataIndexer<String, List<Site>, FileContent> {
-    override fun map(inputData: FileContent): MutableMap<String, MutableList<Site>> {
-      val injectionSites = mutableMapOf<String, MutableList<Site>>()
-      val children: List<UElement?> = inputData.psiFile.children.map {
-        try {
-          it.toUElement()
-        } catch (e: Exception) {
-          println(e.toString())
-          println(e.stackTrace.toString())
-          null
-        }
-      }
-      for (element in children) {
-        if (element is UField && element.findAnnotation("javax.inject.Inject") != null) {
-          val type = element.type.canonicalText
-          injectionSites.getOrDefault(type, defaultValue = mutableListOf())
-              .add(inputData.fileName to element.startOffset)
-        }
-      }
-      return injectionSites
+    override fun map(inputData: FileContent): Map<String, List<Site>> {
+      return TextBasedDaggerSitesLocator.findInjectionSites(inputData.fileName,
+          inputData.contentAsText.toString())
     }
   }
 

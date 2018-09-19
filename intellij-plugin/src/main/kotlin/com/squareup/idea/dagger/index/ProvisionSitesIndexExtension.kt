@@ -9,10 +9,6 @@ import com.intellij.util.indexing.ID
 import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.EnumeratorStringDescriptor
 import org.jetbrains.kotlin.idea.KotlinFileType
-import org.jetbrains.kotlin.psi.psiUtil.startOffset
-import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UMethod
-import org.jetbrains.uast.toUElement
 
 class ProvisionSitesIndexExtension : FileBasedIndexExtension<String, List<Site>>() {
   private val inputFilter = DefaultFileTypeSpecificInputFilter(
@@ -30,17 +26,9 @@ class ProvisionSitesIndexExtension : FileBasedIndexExtension<String, List<Site>>
   override fun getIndexer() = indexer
 
   class ProvisionSitesDataIndexer : DataIndexer<String, List<Site>, FileContent> {
-    override fun map(inputData: FileContent): MutableMap<String, MutableList<Site>> {
-      val provisionSites = mutableMapOf<String, MutableList<Site>>()
-      val children: List<UElement?> = inputData.psiFile.children.map { it.toUElement() }
-      for (element in children) {
-        if (element is UMethod && element.findAnnotation("dagger.Provides") != null) {
-          val type = element.returnType!!.canonicalText
-          provisionSites.getOrDefault(type, defaultValue = mutableListOf())
-              .add(inputData.fileName to element.startOffset)
-        }
-      }
-      return provisionSites
+    override fun map(inputData: FileContent): Map<String, List<Site>> {
+      return TextBasedDaggerSitesLocator.findProvisionSites(inputData.fileName,
+          inputData.contentAsText.toString())
     }
   }
 

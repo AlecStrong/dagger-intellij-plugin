@@ -18,6 +18,7 @@ intellij {
 
 dependencies {
   implementation deps.kotlin.stdlib
+  testImplementation deps.assertj
 }
 
 compileKotlin {
